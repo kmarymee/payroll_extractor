@@ -38,14 +38,18 @@ def refine_totals(sample_total):
 
 #These are the individual steps required to refine the data for accurate extraction.
 
-# Separate 401DLR, 401k, and 401PCT if they are concatenated with other text
+# Separate 401DLR, 401PCT, 401kDLR, 401kPCT and 401k if they are concatenated with other text
 def split_401s(line):
     if "401DLR" in line:
         line = line.replace("401DLR", " 401DLR")
-    if "401k" in line:
-        line = line.replace("401k", " 401k")
     if "401PCT" in line:
         line = line.replace("401PCT", " 401PCT")
+    if "401kDLR" in line:
+        line = line.replace("401kDLR", " 401kDLR")
+    if "401kPCT" in line:
+        line = line.replace("401kPCT", " 401kPCT")
+    if "401k" in line:
+        line = line.replace("401k", " 401k")
     return line
 
 
@@ -67,8 +71,8 @@ def separate_words_from_dollars(line):
     parts = line.split()
     refined_parts = []
     for part in parts:
-        # Use regex to add space between letters and numbers, except for 401DLR and 401k
-        if part not in ("401DLR", "401kLoan", "401PCT"):
+        # Use regex to add space between letters and numbers, except for 401DLR, 401kLoan, 401PCT, 401kDLR, and 401kPCT
+        if part not in ("401DLR", "401kLoan", "401PCT", "401kDLR", "401kPCT"):
             part = re.sub(r'([a-zA-Z])(\d)', r'\1 \2', part)
             part = re.sub(r'(\d)([a-zA-Z])', r'\1 \2', part)
         refined_parts.append(part)
