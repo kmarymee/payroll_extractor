@@ -85,7 +85,13 @@ def assemble_document(pdf_path):
                     formula = f"=SUM({start_cell}:{end_cell})"
                     ws.write_formula(cell, formula, number_format)
                 elif data[dept][category][label]:
-                    ws.write_number(cell, float(data[dept][category][label]), number_format)
+
+                    #dirty fix. Removes those asterisks that throw off the float conversion.
+                    value_to_float = data[dept][category][label]
+                    if "*" in value_to_float:
+                        value_to_float = value_to_float.replace("*","")
+
+                    ws.write_number(cell, float(value_to_float), number_format)
 
         # Update start_row for next category
         start_row = label_row_start + len(labels) - 1  # 0-based, last row used
