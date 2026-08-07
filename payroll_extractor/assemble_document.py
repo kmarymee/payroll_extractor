@@ -91,7 +91,16 @@ def assemble_document(pdf_path):
                     if "*" in value_to_float:
                         value_to_float = value_to_float.replace("*","")
 
-                    ws.write_number(cell, float(value_to_float), number_format)
+                    #Let the user know something is wrong if the value can't be converted to float.
+                    floated_value = 0
+                    try:
+                        floated_value = float(value_to_float)
+                        ws.write_number(cell, floated_value, number_format)
+                    except (ValueError):
+                        cell_format = workbook.add_format({'bg_color': '#D0342C'})
+                        ws.write(cell, f'{value_to_float}??', cell_format)
+                        print(f"WARNING!!! Value '{value_to_float}' in cell {cell} cannot be interpreted numerically!")
+                    
 
         # Update start_row for next category
         start_row = label_row_start + len(labels) - 1  # 0-based, last row used

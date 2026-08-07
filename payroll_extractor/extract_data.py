@@ -14,8 +14,7 @@ def extract_totals(pdf_path):
         for page in pdf.pages:
             lines = page.extract_text_lines()
             for line in lines:
-                if write_totals:
-                    print(line['text']) # Debugging line to print each line of text as it's processed
+
                 
                 if re.match(REPATTERN, line['text']): # This indicates the beginning of a totals section
                     write_totals = line['text']
